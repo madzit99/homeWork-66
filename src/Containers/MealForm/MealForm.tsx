@@ -1,6 +1,6 @@
 import { Button, Form } from "react-bootstrap";
 import ButtonSpinner from "../../Components/Preloader/ButtonSpinner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MealProps } from "../../types";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosApi from "../../axiosApi";
@@ -14,6 +14,22 @@ const MealForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const { id } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchMeal = async () => {
+      setLoading(true);
+      try {
+        if (id) {
+          const response = await axiosApi.get(`meals/${id}.json`);
+          setMeal(response.data);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void fetchMeal();
+  }, [id]);
 
   const onChange = (
     event: React.ChangeEvent<
@@ -35,8 +51,13 @@ const MealForm = () => {
     setLoading(true);
 
     try {
-      await axiosApi.post("meals.json", meal);
-      navigate("/");
+      if (id) {
+        await axiosApi.put(`meals/${id}.json`, meal);
+        navigate("/");
+      } else {
+        await axiosApi.post("meals.json", meal);
+        navigate("/");
+      }
     } finally {
       setLoading(false);
     }

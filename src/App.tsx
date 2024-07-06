@@ -9,6 +9,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Meals />} />
         <Route path="/meal-form" element={<MealForm />} />
+        <Route path="/meal-form/:id" element={<MealForm />} />
       </Routes>
     </Layout>
   );

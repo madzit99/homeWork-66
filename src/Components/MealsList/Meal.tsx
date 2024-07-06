@@ -8,9 +8,10 @@ interface Props {
   ccal: number;
   isLoading: boolean;
   id: string;
+  onDelete: () => void;
 }
 
-const Meal:React.FC<Props> = ({category, name, ccal, isLoading, id}) => {
+const Meal:React.FC<Props> = ({category, name, ccal, isLoading, id, onDelete}) => {
     return (
       <div className="card border border-primary w-75 mx-auto p-3 mt-3">
         <p className="m-0">{category}</p>
@@ -20,7 +21,7 @@ const Meal:React.FC<Props> = ({category, name, ccal, isLoading, id}) => {
           <Link to={`/meal-form/${id}`} className="btn btn-success me-3">
             Редактировать
           </Link>
-          <Button variant="danger" disabled={isLoading}>
+          <Button variant="danger" disabled={isLoading} onClick={onDelete}>
             {isLoading && <ButtonSpinner />}
             Удалить
           </Button>
